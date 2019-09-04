@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+
+<head>
+<script type="text/javascript" th:src="@{/js/jquery.min.js}"></script>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+    <script type="text/javascript" th:src="@{/jquery-validation/jquery.validate.min.js}"></script>
+    <script type="text/javascript" th:src="@{/jquery-validation/localization/messages_zh.min.js}"></script>
+</head>
+
+<body>
+	<h1>秒杀中....</h1>
+	<input id="userID" type="hidden" th:value="${userId}"></input>
+	<input id="goodsID" type="hidden" th:value="${goodsId}"></input>
+	<form action="/user/success" id="successForm" method="post" ></form>
+	<form action="/user/fail" id="failForm" method="post" ></form>
+	<form action="/user/fail2" id="failForm2" method="post" ></form>
+	<form action="/user/fail3" id="failForm3" method="post" ></form>
+
+<script type="text/javascript">
+           $(document).ready(function(){ 
+                c = setInterval("check()",5000); 
+            });
+            	
+          var user=$("#userID").val(); 
+          var goods=$("#goodsID").val();
+          
+          
+          
+           function check(){
+        	   $.get("/user/check",{
+        		  "userId": user,
+        		  "goodsId": goods
+        		   
+        	   },function(data){
+        		   if(data==1){
+        			   window.clearInterval(c);
+        			   $("#successForm").submit();
+        		   }else if(data==0){
+        			   window.clearInterval(c);
+        			   $("#failForm").submit();
+        		   }else if(data==-1){
+        			   window.clearInterval(c);
+        			   $("#failForm2").submit();
+        		   }else{
+        			   window.clearInterval(c);
+        			   $("#failForm3").submit();
+        		   }
+        	   });
+           }
+           
+           
+           
+</script>
+
+
+</body>
+
+</html>
